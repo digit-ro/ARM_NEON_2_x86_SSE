@@ -75,6 +75,7 @@
 #   else
 #       define _NEON2SSE_INLINE _NEON2SSESTORAGE inline __attribute__((__gnu_inline__, __always_inline__, __artificial__))
 #   endif
+#   define _NEON2SSE_FORCE_INLINE _NEON2SSE_INLINE
 #   ifndef NEON2SSE_DISABLE_PERFORMANCE_WARNING
 #       if _GCC_VERSION <  40500
 #           define _NEON2SSE_PERFORMANCE_WARNING(function, explanation)   __attribute__((deprecated)) function
@@ -91,6 +92,7 @@
 #   define _NEON2SSESTORAGE static
 #   define _NEON2SSE_ALIGN_16  __declspec(align(16))
 #   define _NEON2SSE_INLINE _NEON2SSESTORAGE __inline
+#   define _NEON2SSE_FORCE_INLINE _NEON2SSESTORAGE __forceinline
 #   if (defined(_MSC_VER) || defined (__INTEL_COMPILER)) && !defined(NEON2SSE_DISABLE_PERFORMANCE_WARNING)
 #       define _NEON2SSE_PERFORMANCE_WARNING(function, EXPLANATION) __declspec(deprecated(EXPLANATION)) function
 #       if defined(_M_X64)
@@ -2360,50 +2362,50 @@ _NEON2SSE_GLOBAL float64x2_t vsqrtq_f64(float64x2_t a); // VSQRT.F64 q0,q0
         default:     return NAME(vec p,case0); \
         }
 
-    _NEON2SSE_INLINE __m128i _MM_ALIGNR_EPI8(__m128i a, __m128i b, int LANE)
+    _NEON2SSE_FORCE_INLINE __m128i _MM_ALIGNR_EPI8(__m128i a, __m128i b, int LANE)
     {
         _NEON2SSE_SWITCH16(_mm_alignr_epi8, a, _NEON2SSE_COMMA b, LANE)
     }
 
-    _NEON2SSE_INLINE __m128i  _MM_INSERT_EPI16(__m128i vec, int p, const int LANE)
+    _NEON2SSE_FORCE_INLINE __m128i  _MM_INSERT_EPI16(__m128i vec, int p, const int LANE)
     {
         _NEON2SSE_SWITCH8(_mm_insert_epi16, vec, LANE, _NEON2SSE_COMMA p)
     }
 
-    _NEON2SSE_INLINE int16_t _MM_EXTRACT_EPI16(__m128i vec, const int LANE)
+    _NEON2SSE_FORCE_INLINE int16_t _MM_EXTRACT_EPI16(__m128i vec, const int LANE)
     {
         _NEON2SSE_SWITCH8((int16_t)_mm_extract_epi16, vec, LANE,)
     }
 
 #ifdef USE_SSE4
-        _NEON2SSE_INLINE int _MM_EXTRACT_EPI32(__m128i vec, const int LANE)
+        _NEON2SSE_FORCE_INLINE int _MM_EXTRACT_EPI32(__m128i vec, const int LANE)
         {
             _NEON2SSE_SWITCH4(_mm_extract_epi32, 0,1,2,3, vec, LANE,)
         }
 
-        _NEON2SSE_INLINE int _MM_EXTRACT_PS(__m128 vec, const int LANE)
+        _NEON2SSE_FORCE_INLINE int _MM_EXTRACT_PS(__m128 vec, const int LANE)
         {
             _NEON2SSE_SWITCH4(_mm_extract_ps, 0,1,2,3, vec, LANE,)
         }
 
-        _NEON2SSE_INLINE int _MM_EXTRACT_EPI8(__m128i vec, const int LANE)
+        _NEON2SSE_FORCE_INLINE int _MM_EXTRACT_EPI8(__m128i vec, const int LANE)
         {
             _NEON2SSE_SWITCH16(_mm_extract_epi8, vec, , LANE)
         }
 
-        _NEON2SSE_INLINE __m128i  _MM_INSERT_EPI32(__m128i vec, int p, const int LANE)
+        _NEON2SSE_FORCE_INLINE __m128i  _MM_INSERT_EPI32(__m128i vec, int p, const int LANE)
         {
             _NEON2SSE_SWITCH4(_mm_insert_epi32, 0, 1, 2, 3, vec, LANE, _NEON2SSE_COMMA p)
         }
 
-        _NEON2SSE_INLINE __m128i  _MM_INSERT_EPI8(__m128i vec, int p, const int LANE)
+        _NEON2SSE_FORCE_INLINE __m128i  _MM_INSERT_EPI8(__m128i vec, int p, const int LANE)
         {
             _NEON2SSE_SWITCH16(_mm_insert_epi8, vec, _NEON2SSE_COMMA p, LANE)
         }
 
 #ifdef  _NEON2SSE_64BIT
             //the special case of functions available only for SSE4 and 64-bit build.
-            _NEON2SSE_INLINE __m128i  _MM_INSERT_EPI64(__m128i vec, int64_t p, const int LANE)
+            _NEON2SSE_FORCE_INLINE __m128i  _MM_INSERT_EPI64(__m128i vec, int64_t p, const int LANE)
             {
                 switch(LANE) {
                 case 0:
@@ -2415,14 +2417,14 @@ _NEON2SSE_GLOBAL float64x2_t vsqrtq_f64(float64x2_t a); // VSQRT.F64 q0,q0
                 }
             }
 
-            _NEON2SSE_INLINE int64_t _MM_EXTRACT_EPI64(__m128i val, const int LANE)
+            _NEON2SSE_FORCE_INLINE int64_t _MM_EXTRACT_EPI64(__m128i val, const int LANE)
             {
                 if (LANE ==0) return _mm_extract_epi64(val, 0);
                 else return _mm_extract_epi64(val, 1);
             }
 #endif
 
-        _NEON2SSE_INLINE __m128 _MM_INSERT_PS(__m128 vec, __m128 p, const int LANE)
+        _NEON2SSE_FORCE_INLINE __m128 _MM_INSERT_PS(__m128 vec, __m128 p, const int LANE)
         {
             _NEON2SSE_SWITCH4(_mm_insert_ps, 0, 16, 32, 48, vec, LANE, _NEON2SSE_COMMA p)
         }
